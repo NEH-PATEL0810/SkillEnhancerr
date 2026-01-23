@@ -1,0 +1,344 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Plans | Skill Enhancer</title>
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'style1.css' %}">
+  <link rel="stylesheet" class="js-color-style" href="{% static 'color-1.css' %}">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    /* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f8f9fa;
+    color: #333;
+    text-align: center;
+}
+
+.Pheader {
+    background: linear-gradient(to right, #ff4d6d, #ff758c);
+    color: hsl(0,0%,100%);
+    padding: 40px 20px;
+}
+
+.Pheader h1 {
+    color:hsl(0,0%,100%);
+    margin: 0;
+    font-size: 32px;
+}
+
+.Pheader p {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+/* Pricing Container */
+.pricing-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 50px 20px;
+    flex-wrap: wrap;
+}
+
+/* Pricing Cards */
+.pricing-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    width: 320px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pricing-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.pricing-card h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #ff4d6d;
+}
+
+.price {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.price span {
+    font-size: 16px;
+    color: #666;
+}
+
+.features {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.features li {
+    font-size: 16px;
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.features i {
+    color: #ff4d6d;
+    margin-right: 8px;
+}
+
+/* Popular Plan */
+.popular {
+    background: linear-gradient(to bottom, #ff4d6d, #ff758c);
+    color: white;
+    transform: scale(1.05);
+}
+
+.popular h2, .popular .price {
+    color: white;
+}
+
+.popular .features i {
+    color: white;
+}
+
+.popular .btn {
+    background: white;
+    color: #ff4d6d;
+}
+
+/* Button */
+.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    margin-top: 15px;
+    background: #ff4d6d;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #e63e5a;
+    transform: translateY(-2px);
+    color: white
+}
+
+.footer{
+    margin-left:0px;
+}
+
+
+/* Modal Background */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Modal Box */
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  width: 300px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  margin-top: 15px;
+  text-decoration: none;
+  color: white;
+  background: #007BFF;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.btn:hover {
+  background: #0056b3;
+}
+</style>
+</head>
+
+<body>
+  {% if user.is_authenticated %}
+  <!-- HEADER START -->
+  <header class="header">
+    <div class="container">
+      <div class="header-main d-flex justify-content-between align-items-center">
+        <div class="header-logo">
+          <a href="{% url 'home' %}"><span>Skill</span>Enhancer</a>
+        </div>
+        <button type="button" class="header-hamburger-btn js-header-menu-toggler">
+          <span></span>
+        </button>
+        <div class="header-backdrop js-header-backdrop"></div>
+        <nav class="header-menu js-header-menu">
+          <button type="" button class="header-close-btn js-header-menu-toggler">
+            <i class="fas fa-items"></i>
+          </button>
+          <ul class="menu">
+            <li class="menu-item"><a href="{% url 'home' %}">Home</a></li>
+            
+            
+            <li class="menu-item"><a href="{% url 'contact' %}">Contact</a></li>
+            <li class="menu-item"><a href="{% url 'logout' %}">Logout</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- HEADER END -->
+
+<!-- BREADCRUMB START -->
+<div class="breadcrumb-nav">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Explore Courses</li>
+            </ol>
+        </nav>
+
+      </div>
+</div>
+<!-- BREADCRUMB END -->
+    <header class="Pheader">
+      <h1>Choose Your Premium Plan</h1>
+      {% if student_profile.is_premium %}
+          <p>You have already purchased the premium plan. Enjoy learning!</p>
+      {% else %}
+          <p>Unlock exclusive features and take your learning experience to the next level.</p>
+      {% endif %}
+    </header>
+
+    <section class="pricing-container">
+        
+        <!-- Basic Plan -->
+        <div class="pricing-card">
+            <h2>Basic</h2>
+            <p class="price">₹0<span>/month</span></p>
+            <ul class="features">
+                <li><i class="fas fa-check-circle"></i> Access to all basic courses</li>
+                <li><i class="fas fa-check-circle"></i> Community support</li>
+                <li><i class="fas fa-check-circle"></i> No certification</li>
+            </ul>
+            <a href="{% url 'student_login' %}" class="btn">Get Started</a>
+        </div>
+        
+        <!-- Pro Plan -->
+        <div class="pricing-card popular">
+            <h2>Pro</h2>
+            <p class="price">₹1<span>/month</span></p>
+            <ul class="features">
+                <li><i class="fas fa-check-circle"></i> All Basic Plan features</li>
+                <li><i class="fas fa-check-circle"></i> Premium courses</li>
+                <li><i class="fas fa-check-circle"></i> Certification included</li>
+                <li><i class="fas fa-check-circle"></i> Priority support</li>
+            </ul>
+            <a href="{% url 'payment' %}" class="btn">Choose Plan</a>
+        </div>
+       
+      
+    </section>
+
+    <!-- FOOTER START -->
+<footer class="footer">
+    <div class="foter-top"></div>
+    <div class="container"></div>
+    <div class="row">
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3 class="footer-logo"><span>Skill</span>Enhancer</h3>
+          <ul>
+            <li><a href="">About</a></li>
+            <li><a href="">What we offer</a></li>
+            <li><a href="">Career</a></li>
+            <li><a href="">Certificates</a></li>
+            <li><a href="">blog</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3>learning</h3>
+          <ul>
+            <li><a href="">Get the app</a></li>
+            <li><a href="">testiomonials</a></li>
+            <li><a href="">pricing</a></li>
+            <li><a href="">faq</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3>more</h3>
+          <ul>
+            <li><a href="">affiliates</a></li>
+            <li><a href="">Become course creator</a></li>
+            <li><a href="">trainiing webinars</a></li>
+            <li><a href="">free personality test</a></li>
+            <li><a href="">help and support</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3>get in touch</h3>
+          <ul>
+            <li><a href=""><i class="fab fa-facebook social-icon"></i> Facebook</a></li>
+            <li><a href=""><i class="fab fa-twitter social-icon"></i> Twitter</a></li>
+            <li><a href=""><i class="fab fa-instagram social-icon"></i> Instagram</a></li>
+            <li><a href=""><i class="fab fa-youtube social-icon"></i> Youtube</a></li>
+            <li><a href=""><i class="fab fa-linkedin social-icon"></i> Linkedin</a></li>
+          </ul>
+      </div>
+</div>
+    </div>
+    </div>
+    <div class="foter-bottom">
+      <div class="container">
+        <p class="m-0 py-4 text-center">copyright &copy;2025 SKillEnhancer </p>
+      </div>
+</div>
+  </footer>
+  <!-- FOOTER END -->
+  {% else %}
+  {% comment %} <p>You need to <a href="{% url 'login' %}">log in</a> to access this page.</p> {% endcomment %}
+  <div class="modal">
+    <div class="modal-content">
+        <h2>Access Denied</h2>
+        <p>You must be logged in to view this page.</p>
+        <a href="{% url 'student_login' %}" class="btn">Login Now</a>
+    </div>
+</div>
+{% endif %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</body>
+</html>

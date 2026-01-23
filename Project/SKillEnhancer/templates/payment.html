@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upgrade to Premium</title>
+    
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'style1.css' %}">
+  <link rel="stylesheet" class="js-color-style" href="{% static 'color-1.css' %}">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    .rzp-button1{
+       
+        width: 100%;
+        margin-top: 20px;
+        font-size: 18px;
+        margin-left:170px;
+        color:#ffffff; 
+        background: hsl(0,84%,80%); 
+        width:200px; 
+        height:50px;
+         border-radius:4px; 
+         font-size:16px;
+    }
+    body {
+        background-color: #f8f9fa;
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        margin-top:40px;
+        max-width: 600px;
+        margin: 50px auto 70px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .title {
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #343a40;
+    }
+    .home-button {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 18px;
+        text-decoration: none;
+        background-color:hsl(0,84%,80%);
+        color: #fff;
+        border-radius: 5px;
+        transition: 0.3s;
+    }
+    .home-button:hover {
+        background-color:hsl(0,84%,80%);
+    }
+</style>
+</head>
+
+<body>
+    
+    <div class="container">
+        <div class="title">Upgrade to Premium</div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<button id="rzp-button1" class="rzp-button1">
+    Pay Now
+</button>
+</div>
+</div>
+<script>
+    document.getElementById("rzp-button1").onclick = function () {
+        fetch("/initiate-payment/", { 
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: "amount=1"  // Test amount (₹1)
+        })
+        .then(response => response.json())
+        .then(order => {
+            var options = {
+                "key": "rzp_test_N0AVeL2rYWBznu", 
+                "currency": "INR",
+                "name": "SkillEnhancer",
+                "description": "Upgrade to Premium",
+                "image": "https://example.com/your_logo.png",
+                "order_id": order.id,  
+                "handler": function (response) {
+                    fetch("/verify-payment/", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                            "X-CSRFToken": "{{ csrf_token }}"
+                        },
+                        body: "payment_id=" + response.razorpay_payment_id + "&order_id=" + order.id
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert("Payment Successful! Redirecting...");
+                            window.location.href = "/payment-success/";
+                        } else {
+                            alert("Payment Verification Failed!");
+                        }
+                    });
+                },
+                "theme": { "color": "#3399cc" },
+                "prefill": {
+                    "name": "User Name",
+                    "email": "user@example.com",
+                    "contact": "9999999999"
+                },
+                "modal": {
+                    "ondismiss": function () {
+                        alert("Payment Cancelled");
+                    }
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        })
+        .catch(error => console.error("Error initiating payment:", error));
+    };
+</script>
+
+<a href="{% url 'student_base' %}" class="home-button">Go back to Home</a>
+
+</body>
+</html>
+

@@ -1,0 +1,242 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Courses</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% comment %} <link rel="stylesheet" href="{% static 'font-awesome.css' %}"> {% endcomment %}
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'style1.css' %}">
+    <link rel="stylesheet" class="js-color-style" href="{% static 'color-1.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        :root{
+            --orange: hsl(36,80%,50%);
+            --white: hsl(0,0%,100%);
+            --WHITE:hsl(0,0%,100%);
+            --BLACK:hsl(0,0%,0%);
+            --black-90: hsl(0,0%,10%);
+            --black-70: hsl(0,0%,30%);
+            --black-alpha-40: hsl(0,0%,0.4);
+            --yellow-light: hsl(44,95%,83%);
+            --green-light: hsl(158,68%,75%);
+            --red-light: hsl(0,84%,80%);
+            --orange-light: hsl(22,85%,80%);
+            --select-box-bg-color: hsl(0,0%,100%);
+            --border-color-1: hsl(0,0%,90%);
+        
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .Ccontainer {
+            width: 80%;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2 {
+            color: #333;
+        }
+        .search-bar {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .course-list {
+            list-style: none;
+            padding: 0;
+        }
+        .course-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            background: #f9f9f9;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .course-info {
+            text-align: left;
+            flex-grow: 1;
+        }
+        .course-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .course-description {
+            font-size: 14px;
+            color: #555;
+        }
+        .course-date {
+            font-size: 12px;
+            color: #888;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 8px 12px;
+            text-decoration: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .edit-btn {
+            background: hsl(0,84%,80%);
+        }
+        .edit-btn:hover {
+            background: hsl(158,68%,75%);
+        }
+        .delete-btn {
+            background: #dc3545;
+        }
+        .delete-btn:hover {
+            background:  hsl(22,85%,80%);
+        }
+        .proceed-button {
+    
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            font-size: 18px;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s ease, transform 0.2s;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top:-72px;
+            margin-left:-1000px;
+            transform: translate(-50%,-1800%);
+            
+        }
+        .proceed-button:hover {
+    
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            font-size: 18px;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s ease, transform 0.2s;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top:-72px;
+            margin-left:-1000px;
+            transform: translate(-50%,-1800%);
+            
+        }
+
+    </style>
+
+    <script>
+        function searchCourses() {
+            var input, filter, ul, li, a, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("courseList");
+            li = ul.getElementsByTagName("li");
+
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByClassName("course-title")[0];
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    {% if user.is_authenticated %}
+    <div class="main-wrapper">
+      <!-- HEADER START -->
+    <header class="header">
+      <div class="container">
+        <div class="header-main d-flex justify-content-between align-items-center">
+          <div class="header-logo">
+            <a href="{% url 'home' %}"><span>Skill</span>Enhancer</a>
+          </div>
+          <button type="button" class="header-hamburger-btn js-header-menu-toggler">
+            <span></span>
+          </button>
+          <div class="header-backdrop js-header-backdrop"></div>
+          <nav class="header-menu js-header-menu">
+            <button type="" button class="header-close-btn js-header-menu-toggler">
+              <i class="fas fa-items"></i>
+            </button>
+            <ul class="menu">
+              <li class="menu-item"><a href="{% url 'tutor_base' %}">Home</a></li>
+              <li class="menu-item">Hello {{user.username}}</a></li>
+             
+           
+            <li class="menu-item"><a href="{% url 'contact' %}">Contact</a></li>
+            <li class="menu-item"><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      </div>
+    </header>
+    <!-- HEADER END -->
+{% endif %}
+
+    <div class="Ccontainer">
+        <h2>{{user.username}}'s Courses</h2>
+
+        <form method="GET">
+            <input type="text" name="q" class="search-bar" placeholder="Search courses..." value="{{ request.GET.q }}">
+            <button type="submit" class="btn edit-btn">Search</button>
+        </form>
+
+        <ul class="course-list">
+            {% if courses %}
+                {% for course in courses %}
+                    <li class="course-item">
+                        {% if course.image %}
+                            <img src="{{ course.image.url }}" class="course-image" alt="{{ course.title }}">
+                        {% else %}
+                            <img src="{% static 'default_course.png' %}" class="course-image" alt="No Image">
+                        {% endif %}
+                        <div class="course-info">
+                            <span class="course-title">{{ course.title }}</span>
+                            <p class="course-description">{{ course.description }}</p>
+                            <p class="course-meta">
+                                Category: {{ course.category }} | Level: {{ course.level }} | Price: ₹{{ course.price }}
+                            </p>
+                        </div>
+                        <div class="buttons">
+                            {% comment %} <a href="#" class="btn edit-btn">Edit</a> {% endcomment %}
+                            <a href="{% url 'delete_course' course.id %}" class="btn delete-btn">Delete</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <p class="no-courses">You haven't created any courses yet.</p>
+            {% endif %}
+        </ul>
+    </div>
+    
+    <a href="{% url 'tutor_dashboard' %}" class="proceed-button"><i class='bx bx-left-arrow-alt' ></i>Back To Dashboard</a>
+   
+</body>
+</html>

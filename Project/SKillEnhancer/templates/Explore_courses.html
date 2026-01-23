@@ -1,0 +1,348 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title> SkillEnhancer </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% comment %} <link rel="stylesheet" href="{% static 'font-awesome.css' %}"> {% endcomment %}
+  <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'style1.css' %}">
+  <link rel="stylesheet" class="js-color-style" href="{% static 'color-1.css' %}">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+  {% if user.is_authenticated %}
+  <div class="main-wrapper">
+    <!-- HEADER START -->
+  <header class="header">
+    <div class="container">
+      <div class="header-main d-flex justify-content-between align-items-center">
+        <div class="header-logo">
+          <a href="{% url 'home' %}"><span>Skill</span>Enhancer</a>
+        </div>
+        <button type="button" class="header-hamburger-btn js-header-menu-toggler">
+          <span></span>
+        </button>
+        <div class="header-backdrop js-header-backdrop"></div>
+        <nav class="header-menu js-header-menu">
+          <button type="" button class="header-close-btn js-header-menu-toggler">
+            <i class="fas fa-items"></i>
+          </button>
+          <ul class="menu">
+            <li class="menu-item"><a href="{% url 'home' %}">Home</a></li>
+           
+         
+          <li class="menu-item"><a href="{% url 'contact' %}">Contact</a></li>
+          <li class="menu-item"><a href="{% url 'logout' %}">Logout</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    </div>
+  </header>
+  <!-- HEADER END -->
+   <!-- BREADCRUMB START -->
+   <div class="breadcrumb-nav">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Explore Courses</li>
+            </ol>
+        </nav>
+
+    </div>
+</div>
+<!-- BREADCRUMB END -->
+<!-- SEARCH BAR START-->
+<div class="search-container">
+  <form action="{% url 'explorecourse' %}" method="GET" class="search-form">
+      <div class="search-wrapper">
+          <div class="search-input-group">
+              <span class="search-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+              </span>
+              <input 
+                  type="text" 
+                  name="q" 
+                  class="search-input" 
+                  placeholder="Search for courses..."
+                  value="{{ request.GET.title }}"
+                  autocomplete="off"
+              >
+              <button type="button" class="clear-search" title="Clear search">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+              </button>
+          </div>
+          <button type="submit" class="btn btn-primary">Search</button>
+      </div>
+  </form>
+</div>
+
+
+<!-- SEARCH BAR END-->
+<!--SIBAR FILTER LIST START-->
+<div class="main-container">
+  
+<!-- Sidebar Filter -->
+<form method="GET" action="{% url 'explorecourse' %}">
+  <div class="sidebar-filter">
+    <h3 class="filter-heading">Filter Courses</h3>
+
+    <!-- Search Bar -->
+    <div class="filter-section">
+      <h4 class="filter-title">Search</h4>
+      <input type="text" name="title" placeholder="Search by Title" value="{{ request.GET.title }}">
+    </div>
+
+    <!-- Categories -->
+    <div class="filter-section">
+      <h4 class="filter-title">Categories</h4>
+      <div class="filter-group">
+        {% for category in categories %}
+          <label class="filter-item">
+            <input type="checkbox" name="category" value="{{ category }}" 
+              {% if category in selected_categories %} checked {% endif %}>
+            <span class="checkmark"></span> {{ category|title }}
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Price Range -->
+    <div class="filter-section">
+      <h4 class="filter-title">Price Range</h4>
+      <div class="price-range">
+        <input type="number" name="min_price" placeholder="Min" min="0" value="{{ request.GET.min_price }}">
+        <span class="price-separator">to</span>
+        <input type="number" name="max_price" placeholder="Max" min="0" value="{{ request.GET.max_price }}">
+      </div>
+    </div>
+
+    {% comment %} <!-- Rating -->
+    <div class="filter-section">
+      <h4 class="filter-title">Rating</h4>
+      <div class="filter-group">
+        <label class="filter-item">
+          <input type="radio" name="rating" value="4" {% if request.GET.rating == "4" %}checked{% endif %}>
+          <span class="checkmark"></span> ★★★★☆ & up
+        </label>
+        <label class="filter-item">
+          <input type="radio" name="rating" value="3" {% if request.GET.rating == "3" %}checked{% endif %}>
+          <span class="checkmark"></span> ★★★☆☆ & up
+        </label>
+      </div>
+    </div> {% endcomment %}
+
+    <!-- Level -->
+    <div class="filter-section">
+      <h4 class="filter-title">Level</h4>
+      <div class="filter-group">
+        {% for level in levels %}
+          <label class="filter-item">
+            <input type="checkbox" name="level" value="{{ level }}" 
+              {% if level in selected_levels %} checked {% endif %}>
+            <span class="checkmark"></span> {{ level|title }}
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Apply & Clear Buttons -->
+    <div class="filter-actions">
+      <button type="submit" class="apply-filters">Apply Filters</button>
+      <a href="{% url 'explorecourse' %}" class="clear-filters" text>Clear All</a>
+    </div>
+  </div>
+</form>
+
+<!--SIBAR FILTER LIST END-->
+
+<section class="courses-section section-padding">
+  <div class="container">
+      <div class="row justify-content-center">
+          <div class="col-md-8">
+              <div class="section-title text-center mb-4">
+                  <h2 class="title">Our courses</h2>
+                  <p class="sub-title">Find the right course for you</p>
+              </div>
+          </div>
+      </div>
+      
+      <br>
+     
+              
+              <div class="tab-content" id="nav-tabContent">
+                  <div class="tab-pane fade show active" id="web-development" role="tabpanel"
+                      aria-labelledby="web-development-tab" tabindex="0">
+                      <div class="row justify-content-center">
+                          <!-- courses item start -->
+                          {% for course in courses %}
+                          <div class="col-md-6 col-lg-3">
+                            <div class="courses-item">
+                              <a href="#" class="link"> 
+                                <div class="courses-item-inner">
+                                  <div class="img-box">
+                                    <img src="{{ course.image.url }}" alt="{{ course.title }} image"> 
+                                  </div>
+                                  <h3 class="title">{{ course.title }}</h3> 
+                                  <div class="instructor">
+                                    <img src="{%static 'instructor/1.png'%}" alt="instructor img"> 
+                                    <span class="instructor-name">John Doe</span> 
+                                  </div>
+                                  
+                                  <div class="price">
+                                    {% if not student_profile.is_premium %}
+                                    ₹{{ course.price }}
+                                    {% else %}
+                                    <span class="premium-label">Premium Access</span>
+                                    {% endif %}
+                                </div>
+                                </div>
+                              </a>
+                            </div>
+                          </div>
+                        {% empty %}
+                          <p>No courses found matching your filters.</p> 
+                        {% endfor %}
+                        
+                          
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+      </div>
+
+      <div class="row">
+          <div class="col-12" mt-3>
+<!-- PAGINATION START -->
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <!-- Previous Page Button -->
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+            <i class="fas fa-chevron-left"></i>
+          </a>
+        </li>
+      {% endif %}
+  
+      <!-- Page Numbers -->
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+        {% endif %}
+      {% endfor %}
+  
+      <!-- Last Page Link -->
+      {% if page_obj.paginator.num_pages > 5 and page_obj.number < page_obj.paginator.num_pages|add:'-2' %}
+        <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a></li>
+      {% endif %}
+  
+      <!-- Next Page Button -->
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+            <i class="fas fa-chevron-right"></i>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+  <!-- PAGINATION END -->
+          </div>
+      </div>
+  </div>
+  </div>
+</section>
+</div>
+<!-- COURSES SECTION END -->
+
+<!-- FOOTER START -->
+<footer class="footer">
+    <div class="foter-top"></div>
+    <div class="container"></div>
+    <div class="row">
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3 class="footer-logo"><span>Skill</span>Enhancer</h3>
+          <ul>
+            <li><a href="">About</a></li>
+            <li><a href="">What we offer</a></li>
+            <li><a href="">Career</a></li>
+            <li><a href="">Certificates</a></li>
+            <li><a href="">blog</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3>learning</h3>
+          <ul>
+            <li><a href="">Get the app</a></li>
+            <li><a href="">testiomonials</a></li>
+            <li><a href="">pricing</a></li>
+            <li><a href="">faq</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3>more</h3>
+          <ul>
+            <li><a href="">affiliates</a></li>
+            <li><a href="">Become course creator</a></li>
+            <li><a href="">trainiing webinars</a></li>
+            <li><a href="">free personality test</a></li>
+            <li><a href="">help and support</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3>get in touch</h3>
+          <ul>
+            <li><a href=""><i class="fab fa-facebook social-icon"></i> Facebook</a></li>
+            <li><a href=""><i class="fab fa-twitter social-icon"></i> Twitter</a></li>
+            <li><a href=""><i class="fab fa-instagram social-icon"></i> Instagram</a></li>
+            <li><a href=""><i class="fab fa-youtube social-icon"></i> Youtube</a></li>
+            <li><a href=""><i class="fab fa-linkedin social-icon"></i> Linkedin</a></li>
+          </ul>
+      </div>
+</div>
+    </div>
+    </div>
+    <div class="foter-bottom">
+      <div class="container">
+        <p class="m-0 py-4 text-center">copyright &copy;2025 SKillEnhancer </p>
+      </div>
+</div>
+  </footer>
+  <!-- FOOTER END -->
+  {% else %}
+  
+  <div class="modal">
+    <div class="modal-content">
+        <h2>Access Denied</h2>
+        <p>You must be logged in to view this page.</p>
+        <a href="{% url 'student_login' %}" class="btn">Login Now</a>
+    </div>
+</div>
+{% endif %}
+ 
+</body>
+
+</html>

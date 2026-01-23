@@ -1,0 +1,319 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Quiz</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .fcontainer {
+            margin-top:200px;
+            width: 60%;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        select, input[type="text"], input[type="number"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .correct-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .proceed-button {
+    
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            font-size: 18px;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s ease, transform 0.2s;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top:-72px;
+            margin-left:-900px;
+            transform: translate(-50%,-2400%);
+            
+        }
+        
+.header .sub-menu-item a{
+    display: block;
+    padding: 10px 20px;
+    color: var(--black-90);
+    text-transform: capitalize;
+    font-weight: 400;
+    transition:color 0.3s ease;
+
+}
+.header-backdrop,
+.header-close-btn,
+.header-hamburger-btn{
+    display:none;
+}
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+}
+.header-logo span{
+    text-align:left;
+    color:var(--main-color);
+}
+.header .menu-item{
+    text-decoration:none;
+    display:inline-block;
+    margin-left: 40px;
+    position:relative;
+
+}
+.header .menu-item>a{
+    display: block;
+    padding: 24px 0;
+    font-weight:400;
+    color:var(--black-90);
+    text-transform: capitalize;
+    transition: color 0.3s ease;
+}
+.header .sub-menu-item a:hover,
+.header .menu-item:hover > a{
+    color:var(--main-color);
+}
+.header .menu-item>a i{
+    font-size: 13px;
+    margin-left: 3px;
+    pointer-events: none;
+}
+
+.header .sub-menu{
+    position: absolute;
+    top:100%;
+    background-color: var(--white);
+    left:0;
+    width: 210px;
+    padding: 10px 0;
+    border-radius: 5px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    z-index: 2;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(10px);
+}
+@media(min-width: 992px){
+    .header .menu-item:hover >.sub-menu{
+        visibility: visible;
+       opacity: 1;
+       transform:translateY(0) ; 
+    }
+}
+.header{
+    text-decoration:none;
+    background: #ffffff;
+    position: relative;
+    padding: 15px 0;
+    /* Decorative top border with gradient and animation */
+    border-top: 4px solid hsl(0, 84%, 80%);
+  
+}
+.header-logo a{
+    text-decoration:none;
+ font-size: 26px;
+ text-transform: uppercase;
+ font-weight:700;
+ color: var(--black-70);
+}
+.header::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(
+        90deg,
+        hsl(0, 84%, 80%) 0%,
+        hsl(320, 84%, 80%) 33%,
+        hsl(280, 84%, 80%) 66%,
+        hsl(0, 84%, 80%) 100%
+    );
+    animation: borderGradient 8s linear infinite;
+}
+
+.header::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background: 
+        linear-gradient(135deg, transparent 33%, #ffffff 33%),
+        linear-gradient(225deg, transparent 33%, #ffffff 33%);
+    background-size: 20px 100%;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
+}   
+    </style>
+
+    <script>
+    
+        function updateQuestionsDropdown() {
+            const quizId = document.getElementById("quiz-select-option").value;
+            const questionSelect = document.getElementById("question-select");
+            
+            
+            questionSelect.innerHTML = '<option value="">-- Select a Question --</option>';
+    
+            if (quizId) {
+                fetch(`/get-questions/${quizId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.questions.forEach(question => {
+                            let option = document.createElement("option");
+                            option.value = question.id;
+                            option.textContent = question.text;
+                            questionSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error("Error loading questions:", error));
+            }
+        }
+    </script>
+</head>
+
+<body>
+    {% if user.is_authenticated %}
+    <div class="main-wrapper">
+      <!-- HEADER START -->
+    <header class="header">
+      <div class="container">
+        <div class="header-main d-flex justify-content-between align-items-center">
+          <div class="header-logo">
+            <a href="{% url 'home' %}"><span>Skill</span>Enhancer</a>
+          </div>
+          <button type="button" class="header-hamburger-btn js-header-menu-toggler">
+            <span></span>
+          </button>
+          <div class="header-backdrop js-header-backdrop"></div>
+          <nav class="header-menu js-header-menu">
+            <button type="" button class="header-close-btn js-header-menu-toggler">
+              <i class="fas fa-items"></i>
+            </button>
+            <ul class="menu">
+              <li class="menu-item"><a href="{% url 'tutor_base' %}">Home</a></li>
+              <li class="menu-item">Hello {{user.username}}</a></li>
+             
+           
+            <li class="menu-item"><a href="{% url 'contact' %}">Contact</a></li>
+            <li class="menu-item"><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      </div>
+    </header>
+    <!-- HEADER END -->
+
+{% if messages %}
+<div class="alert-container">
+    {% for message in messages %}
+    <div class="alert alert-success">
+        <h4 class="alert-heading">
+        {{ message }}
+        </h4>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+    <div class="fcontainer">
+        <h2>Create a Quiz</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ quiz_form.as_p }}
+            <button type="submit" name="create_quiz">Create Quiz</button>
+        </form>
+
+        <h2>Add a Question</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label>Select Quiz:</label>
+            <select name="quiz" id="quiz-select" onchange="updateQuestionsDropdown()">
+                {% for quiz in quizzes %}
+                    <option value="{{ quiz.id }}">{{ quiz.title }}</option>
+                {% endfor %}
+            </select>
+            {{ question_form.as_p }}
+            <button type="submit" name="add_question">Add Question</button>
+        </form>
+
+        <h2>Add Options</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% comment %} <label>Select Question:</label>
+            <select name="question" id="question-select">-- Select a Question --</select>
+            
+            <label>Option Text:</label>
+            <input type="text" name="option_text" required>
+            
+            <div class="correct-option">
+                <label>Is Correct?</label>
+                <input type="checkbox" name="is_correct">
+            </div> {% endcomment %}
+            {{ option_form.as_p }}
+            {% comment %} <div class="correct-option">
+                <label>Is Correct?</label>
+                <input type="checkbox" name="is_correct">
+            </div> {% endcomment %}
+            
+            <button type="submit" name="add_option">Add Option</button>
+        </form>
+
+    </div>
+
+    <a href="{% url 'tutor_dashboard' %}" class="proceed-button"><i class='bx bx-left-arrow-alt' ></i>Back To Dashboard</a>
+    {% endif %}
+
+</body>
+</html>

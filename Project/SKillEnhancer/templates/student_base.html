@@ -1,0 +1,359 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title> SkillEnhancer </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% comment %} <link rel="stylesheet" href="{% static 'font-awesome.css' %}"> {% endcomment %}
+  <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'style1.css' %}">
+  <link rel="stylesheet" class="js-color-style" href="{% static 'color-1.css' %}">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<style>
+  .home-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 18px;
+    text-decoration: none;
+    background-color:hsl(0,84%,80%);
+    color: #fff;
+    border-radius: 5px;
+    transition: 0.3s;
+    margin-top:90px;
+}
+.home-button:hover {
+  color:white;
+  background-color:hsl(0,84%,80%);
+}
+</style>
+</head>
+
+<body>
+  {% if user.is_authenticated %}
+  <div class="main-wrapper">
+    <header class="header">
+      <div class="container">
+        <div class="header-main d-flex justify-content-between align-items-center">
+          <div class="header-logo">
+            <a href="{% url 'home' %}"><span>Skill</span>Enhancer</a>
+          </div>
+          <button type="button" class="header-hamburger-btn js-header-menu-toggler">
+            <span></span>
+          </button>
+          <div class="header-backdrop js-header-backdrop"></div>
+          <nav class="header-menu js-header-menu">
+            <button type="button" class="header-close-btn js-header-menu-toggler">
+              <i class="fas fa-times"></i> <!-- Changed 'fa-items' to 'fa-times' for closing -->
+            </button>
+            <ul class="menu">
+              
+               
+                  <li class="menu-item">
+                    <a href="{% url 'student_premium_plan' %}">Premium Plan <i class='bx bx-purchase-tag-alt'></i></a>
+                  </li>
+                
+
+              <li class="menu-item menu-item-has-children">
+                <a href="#" class="js-toggle-sub-menu">Courses <i class='bx bx-down-arrow'></i></a>
+                <ul class="sub-menu js-sub-menu">
+                  
+                  {% comment %} <li class="sub-menu-item"><a href="{% url 'tutor_your_courses' %}">Courses</a></li> {% endcomment %}
+                  
+                  <li class="sub-menu-item"><a href="#">Courses</a></li>
+               
+                  <li class="sub-menu-item"><a href="#">Course Details</a></li>
+                </ul>
+              </li>
+
+              <li class="menu-item"><a href="{% url 'contact' %}">Contact</a></li>
+              <li class="menu-item"><a href="{% url 'logout' %}">Logout</a></li>
+
+              <li class="menu-item">Hello, {{ user.username }}</li>
+             
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  
+  {% comment %} <a href="{% url 'tutor_dashboard' %}" class="home-button">Go back to Dashboard</a> {% endcomment %}
+ <a href="{% url 'student_dashboard' %}" class="home-button">Go back to Dashboard</a> 
+ 
+  
+  {% endif %}
+  <!--  BANNER SECTION START-->
+  <section class="banner-section d-flex align-items-center">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6 ">
+          <div class="banner-text">
+            <h2 class="mb-3">An investment in knowledge pays the best interest.</h2>
+            <h1 class="mb-3 text-capitalize">Best Online platform for learning</h1>
+            <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita accusantium earum dolores
+              quasi odit laboriosam alias laudantium harum dolorem necessitatibus unde dolore, ducimus quos dolorum qui
+              temporibus iusto explicabo at.</p>
+              {% if not user.is_authenticated %}
+            <a href="{% url 'student_register' %}" class="btn btn-theme">Join Free</a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="banner-img">
+            <div class="circular-img">
+              <div class="circular-img-inner">
+                <div class="circular-img-circle">
+
+                </div>
+                <img src="{% static 'banner-img.png' %}" alt="banner img">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--BANNER SECTION END-->
+
+  <!-- FUN FACTS SECTION START -->
+  <section class="fun-facts-section">
+    <div class="container">
+      <div class="box py-2">
+        <div class="row text-center">
+          <div class="col-md-6 col-lg-3">
+            <div class="fun-facts-item">
+              <h2 class="style-1">800k</h2>
+              <p>Students we've</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="fun-facts-item">
+              <h2 class="style-2">500+</h2>
+              <p>Courses</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="fun-facts-item">
+              <h2 class="style-3">50+</h2>
+              <p>Countries</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="fun-facts-item">
+              <h2 class="style-4">100+</h2>
+              <p>Skilled Instructor</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  </section>
+  <!-- FUN FACTS SECTION END -->
+
+  <!-- COURSES SECTION START -->
+  <section class="courses-section section-padding">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="section-title text-center">
+            <h2 class="title">courses</h2>
+            <p class="sub-title">Find the right course for you</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- courses item start -->
+        <div class="col-md-6 col-lg-3">
+          <div class="courses-item">
+            <a href="courses-details.html" class="link">
+              <div class="courses-item-inner">
+                <div class="img-box">
+                  <img src="{% static 'courses/web-development/html.jpeg' %}" alt="course img">
+                </div>
+                <h3 class="title">html for beginners</h3>
+                <div class="instructor">
+                  <img src="{% static 'instructor/1.png' %}" alt="instructor img">
+                  <span class="instructor-name">John Doe</span>
+                </div>
+                <div class="rating">
+                  <span class="average-rating">(4.5)</span>
+                  <span class="average-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                  </span>
+                  <span class="reviews">(230)</span>
+                </div>
+                <div class="price">₹599</div>
+              </div>
+            </a>
+          </div>
+        </div>
+        <!-- courses item end -->
+        <div class="col-md-6 col-lg-3">
+          <div class="courses-item">
+            <a href="courses-details.html" class="link">
+              <div class="courses-item-inner">
+                <div class="img-box">
+                  <img src="{%static 'courses/web-development/CSS.png' %}" alt="course img">
+                </div>
+                <h3 class="title">css for beginners</h3>
+                <div class="instructor">
+                  <img src="{%static 'instructor/1.png' %}" alt="instructor img">
+                  <span class="instructor-name">John Doe</span>
+                </div>
+                <div class="rating">
+                  <span class="average-rating">(4.5)</span>
+                  <span class="average-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                  </span>
+                  <span class="reviews">(230)</span>
+                </div>
+                <div class="price">₹599</div>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="courses-item">
+            <a href="courses-details.html" class="link">
+              <div class="courses-item-inner">
+                <div class="img-box">
+                  <img src="{%static 'courses/AIML/python.png' %}" alt="course img">
+                </div>
+                <h3 class="title">Python for beginners</h3>
+                <div class="instructor">
+                  <img src="{%static 'instructor/1.png' %}" alt="instructor img">
+                  <span class="instructor-name">John Doe</span>
+                </div>
+                <div class="rating">
+                  <span class="average-rating">(4.5)</span>
+                  <span class="average-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                  </span>
+                  <span class="reviews">(230)</span>
+                </div>
+                <div class="price">₹599</div>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="courses-item">
+            <a href="courses-details.html" class="link">
+              <div class="courses-item-inner">
+                <div class="img-box">
+                  <img src="{% static 'courses/web-development/JS.png' %}" alt="course img">
+                </div>
+                <h3 class="title">Javascript for beginners</h3>
+                <div class="instructor">
+                  <img src="{% static 'instructor/1.png' %}" alt="instructor img">
+                  <span class="instructor-name">John Doe</span>
+                </div>
+                <div class="rating">
+                  <span class="average-rating">(4.5)</span>
+                  <span class="average-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                  </span>
+                  <span class="reviews">(230)</span>
+                </div>
+                <div class="price">₹599</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 text-center mt-3">
+          <a href="{% url 'student_explore_course' %}" class="btn btn-theme">View all courses</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- COURSES SECTION END -->
+
+
+
+  <!-- FOOTER START -->
+  <footer class="footer">
+    <div class="foter-top"></div>
+    <div class="container"></div>
+    <div class="row">
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3 class="footer-logo"><span>Skill</span>Enhancer</h3>
+          <ul>
+            <li><a href="">About</a></li>
+            <li><a href="">What we offer</a></li>
+            <li><a href="">Career</a></li>
+            <li><a href="">Certificates</a></li>
+            <li><a href="">blog</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3>learning</h3>
+          <ul>
+            <li><a href="">Get the app</a></li>
+            <li><a href="">testiomonials</a></li>
+            <li><a href="">pricing</a></li>
+            <li><a href="">faq</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3>more</h3>
+          <ul>
+            <li><a href="">affiliates</a></li>
+            <li><a href="">Become course creator</a></li>
+            <li><a href="">trainiing webinars</a></li>
+            <li><a href="">free personality test</a></li>
+            <li><a href="">help and support</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3>get in touch</h3>
+          <ul>
+            <li><a href=""><i class="fab fa-facebook social-icon"></i> Facebook</a></li>
+            <li><a href=""><i class="fab fa-twitter social-icon"></i> Twitter</a></li>
+            <li><a href=""><i class="fab fa-instagram social-icon"></i> Instagram</a></li>
+            <li><a href=""><i class="fab fa-youtube social-icon"></i> Youtube</a></li>
+            <li><a href=""><i class="fab fa-linkedin social-icon"></i> Linkedin</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+    <div class="foter-bottom">
+      <div class="container">
+        <p class="m-0 py-4 text-center">copyright &copy;2025 SKillEnhancer </p>
+      </div>
+</div>
+  </footer>
+  <!-- FOOTER END -->
+  <script src="{% static 'bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'main.js' %}"></script>
+</body>
+
+</html>

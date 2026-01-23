@@ -1,0 +1,370 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title> SkillEnhancer </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% comment %} <link rel="stylesheet" href="{% static 'font-awesome.css' %}"> {% endcomment %}
+  <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'style1.css' %}">
+  <link rel="stylesheet" class="js-color-style" href="{% static 'color-1.css' %}">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<style>
+  .home-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 18px;
+    text-decoration: none;
+    background-color:hsl(0,84%,80%);
+    color: #fff;
+    border-radius: 5px;
+    transition: 0.3s;
+    margin-top:90px;
+}
+.home-button:hover {
+  color:white;
+  background-color:hsl(0,84%,80%);
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.text-danger {
+    font-weight: bold;
+}
+
+.btn-primary, .btn-success {
+    margin-top: 10px;
+}
+/* General Spacing and Layout */
+.course-card, .card {
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
+}
+
+.section-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #2c3e50;
+    border-bottom: 3px solid #f1c40f;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+/* Course Title */
+.course-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #34495e;
+}
+
+/* Course Description */
+.course-description {
+    font-size: 16px;
+    color: #555;
+}
+
+/* Modules and Resources */
+.list-group-item {
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+}
+
+.list-group-item strong {
+    color: #2980b9;
+}
+
+.btn-sm {
+    font-size: 14px;
+    padding: 6px 10px;
+}
+
+/* Tutor Card */
+.tutor-card {
+    text-align: center;
+    background: #f9f9f9;
+}
+
+.tutor-card p {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+}
+
+/* Locked Badge */
+.bg-danger {
+    font-size: 14px;
+    padding: 5px 10px;
+}
+
+</style>
+</head>
+
+<body>
+  {% if user.is_authenticated %}
+  <div class="main-wrapper">
+    <header class="header">
+      <div class="container">
+        <div class="header-main d-flex justify-content-between align-items-center">
+          <div class="header-logo">
+            <a href="{% url 'home' %}"><span>Skill</span>Enhancer</a>
+          </div>
+          <button type="button" class="header-hamburger-btn js-header-menu-toggler">
+            <span></span>
+          </button>
+          <div class="header-backdrop js-header-backdrop"></div>
+          <nav class="header-menu js-header-menu">
+            <button type="button" class="header-close-btn js-header-menu-toggler">
+              <i class="fas fa-times"></i> <!-- Changed 'fa-items' to 'fa-times' for closing -->
+            </button>
+            <ul class="menu">
+              
+               
+                  <li class="menu-item">
+                    <a href="{% url 'student_premium_plan' %}">Premium Plan <i class='bx bx-purchase-tag-alt'></i></a>
+                  </li>
+                
+
+              <li class="menu-item menu-item-has-children">
+                <a href="#" class="js-toggle-sub-menu">Courses <i class='bx bx-down-arrow'></i></a>
+                <ul class="sub-menu js-sub-menu">
+                  
+                  {% comment %} <li class="sub-menu-item"><a href="{% url 'tutor_your_courses' %}">Courses</a></li> {% endcomment %}
+                  
+                  <li class="sub-menu-item"><a href="#">Courses</a></li>
+               
+                  <li class="sub-menu-item"><a href="#">Course Details</a></li>
+                </ul>
+              </li>
+
+              <li class="menu-item"><a href="{% url 'contact' %}">Contact</a></li>
+              <li class="menu-item"><a href="{% url 'logout' %}">Logout</a></li>
+
+              <li class="menu-item">Hello, {{ user.username }}</li>
+             
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  {% comment %} <div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <h2>{{ course.title }}</h2>
+            <img src="{{ course.image.url }}" alt="{{ course.title }}" class="img-fluid">
+            <p>{{ course.description }}</p>
+
+            <!-- MODULES -->
+            <h3>Modules</h3>
+            <ul>
+                {% for module in modules %}
+                    <li><strong>{{ module.title }}</strong>: {{ module.content }}</li>
+                {% empty %}
+                    <p>No modules available.</p>
+                {% endfor %}
+            </ul>
+
+            <!-- RESOURCES -->
+            <h3>Resources</h3>
+            <ul>
+                {% for resource in resources %}
+                    <li>
+                        {{ resource.title }} - 
+                        {% if resource.file %}
+                            <a href="{{ resource.file.url }}" target="_blank">Download PDF</a>
+                        {% endif %}
+                        {% if resource.url %}
+                            <a href="{{ resource.url }}" target="_blank">Visit Resource</a>
+                        {% endif %}
+                        {% if resource.video_url %}
+                            {% if is_premium %}
+                                <a href="{{ resource.video_url }}" target="_blank">Watch Video</a>
+                            {% else %}
+                                🔒 <span class="text-danger">Premium Users Only</span>
+                            {% endif %}
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <p>No resources available.</p>
+                {% endfor %}
+            </ul>
+
+            <!-- QUIZZES -->
+            <h3>Quiz</h3>
+            {% if is_premium %}
+                {% for quiz in quizzes %}
+                    <p><a href="{% url 'quiz_detail' quiz.id %}" class="btn btn-primary">Take Quiz</a></p>
+                {% empty %}
+                    <p>No quizzes available.</p>
+                {% endfor %}
+            {% else %}
+                <p class="text-danger">🔒 Premium Users Only</p>
+            {% endif %}
+        </div>
+
+        <!-- TUTOR INFO -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Tutor</h4>
+                    <p>{{ course.tutor.username }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> {% endcomment %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Course Overview -->
+        <div class="col-lg-8">
+            <div class="card course-card p-4">
+                <h2 class="course-title">{{ course.title }}</h2>
+                <img src="{{ course.image.url }}" alt="{{ course.title }}" class="img-fluid rounded">
+                <p class="course-description mt-3">{{ course.description }}</p>
+            </div>
+
+            <!-- Modules Section -->
+            <div class="card mt-4 p-4">
+                <h3 class="section-title">📚 Modules</h3>
+                <ul class="list-group">
+                    {% for module in modules %}
+                        <li class="list-group-item">
+                            <strong>{{ module.title }}</strong> - {{ module.content }}
+                        </li>
+                    {% empty %}
+                        <p class="text-muted">No modules available.</p>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Resources Section -->
+            <div class="card mt-4 p-4">
+                <h3 class="section-title">📂 Resources</h3>
+                <ul class="list-group">
+                    {% for resource in resources %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>{{ resource.title }}</span>
+                            <div>
+                                {% if resource.file %}
+                                    <a href="{{ resource.file.url }}" class="btn btn-outline-info btn-sm" target="_blank">📄 Download PDF</a>
+                                {% endif %}
+                                {% if resource.url %}
+                                    <a href="{{ resource.url }}" class="btn btn-outline-success btn-sm" target="_blank">🔗 Visit</a>
+                                {% endif %}
+                                {% if resource.video_url %}
+                                    {% if is_premium %}
+                                        <a href="{{ resource.video_url }}" class="btn btn-primary btn-sm" target="_blank">🎥 Watch Video</a>
+                                    {% else %}
+                                        <span class="badge bg-danger">🔒 Premium Only</span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </li>
+                    {% empty %}
+                        <p class="text-muted">No resources available.</p>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Quiz Section -->
+            {% comment %} <div class="card mt-4 p-4">
+                <h3 class="section-title">📝 Quiz</h3>
+                {% if is_premium %}
+                    {% for quiz in quizzes %}
+                        <p><a href="{% url 'quiz_detail' quiz.id %}" class="btn btn-warning">Take Quiz</a></p>
+                    {% empty %}
+                        <p class="text-muted">No quizzes available.</p>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-danger">🔒 Available only for Premium Users</p>
+                {% endif %}
+            </div>
+        </div> {% endcomment %}
+
+        <!-- Tutor Info Section -->
+        <div class="col-lg-4">
+            <div class="card tutor-card p-4">
+                <h4 class="section-title">👨‍🏫 Tutor</h4>
+                <p>{{ course.tutor.username }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+   <!-- FOOTER START -->
+   <footer class="footer">
+    <div class="foter-top"></div>
+    <div class="container"></div>
+    <div class="row">
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3 class="footer-logo"><span>Skill</span>Enhancer</h3>
+          <ul>
+            <li><a href="">About</a></li>
+            <li><a href="">What we offer</a></li>
+            <li><a href="">Career</a></li>
+            <li><a href="">Certificates</a></li>
+            <li><a href="">blog</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3>learning</h3>
+          <ul>
+            <li><a href="">Get the app</a></li>
+            <li><a href="">testiomonials</a></li>
+            <li><a href="">pricing</a></li>
+            <li><a href="">faq</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3>more</h3>
+          <ul>
+            <li><a href="">affiliates</a></li>
+            <li><a href="">Become course creator</a></li>
+            <li><a href="">trainiing webinars</a></li>
+            <li><a href="">free personality test</a></li>
+            <li><a href="">help and support</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3>get in touch</h3>
+          <ul>
+            <li><a href=""><i class="fab fa-facebook social-icon"></i> Facebook</a></li>
+            <li><a href=""><i class="fab fa-twitter social-icon"></i> Twitter</a></li>
+            <li><a href=""><i class="fab fa-instagram social-icon"></i> Instagram</a></li>
+            <li><a href=""><i class="fab fa-youtube social-icon"></i> Youtube</a></li>
+            <li><a href=""><i class="fab fa-linkedin social-icon"></i> Linkedin</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+    <div class="foter-bottom">
+      <div class="container">
+        <p class="m-0 py-4 text-center">copyright &copy;2025 SKillEnhancer </p>
+      </div>
+</div>
+  </footer>
+  {% endif %}
+  <!-- FOOTER END -->
+  <script src="{% static 'bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'main.js' %}"></script>
+</body>
+
+</html>

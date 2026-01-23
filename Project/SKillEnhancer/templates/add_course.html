@@ -1,0 +1,306 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title> SkillEnhancer </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% comment %} <link rel="stylesheet" href="{% static 'font-awesome.css' %}"> {% endcomment %}
+  <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'style1.css' %}">
+  <link rel="stylesheet" class="js-color-style" href="{% static 'color-1.css' %}">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    body{
+        overflow-y:auto;
+    }
+    .footer {
+        position: relative;
+        bottom: 0;
+        margin-left: 0;
+        width: 90%;
+       
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    .form-container {
+        margin-top:100px;
+        margin-left:470px;
+        max-width: 500px;
+        background: var(--white);
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Heading */
+    h2 {
+        text-align: center;
+        font-size: 24px;
+        color: var(--black-90);
+        margin-bottom: 20px;
+    }
+    
+    /* Labels */
+    label {
+        font-weight: bold;
+        color: var(--black-90);
+        display: block;
+        margin-top: 12px;
+    }
+    
+    /* Input Fields */
+    input, select, textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid var(--border-color-1);
+        border-radius: 5px;
+        font-size: 14px;
+    }
+    
+    /* Textarea Resizing */
+    textarea {
+        resize: vertical;
+    }
+    
+    /* File Input */
+    input[type="file"] {
+        border: none;
+    }
+    
+    /* Submit Button */
+    button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 20px;
+        background-color: var(--orange);
+        color: var(--white);
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+    
+    /* Hover Effect */
+    button:hover {
+        background-color: var(--orange-light);
+    }
+    
+    /* Responsive Design */
+    @media screen and (max-width: 600px) {
+        .form-container {
+            width: 90%;
+            padding: 20px;
+        }
+    }
+    /* Proceed Button Container */
+.proceed-button-container {
+    position: absolute;
+    bottom: -50px; /* Positioned right above the footer */
+    left: 80%;
+    transform: translateX(-50%);
+    text-align: center;
+    width: 100%;
+}
+
+/* Proceed Button Styling */
+.proceed-button {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    font-size: 18px;
+    padding: 12px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.proceed-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+    color:white;
+}
+.alert-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.alert {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #28a745;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+  </style>
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <div class="main-wrapper">
+      <!-- HEADER START -->
+    <header class="header">
+      <div class="container">
+        <div class="header-main d-flex justify-content-between align-items-center">
+          <div class="header-logo">
+            <a href="{% url 'home' %}"><span>Skill</span>Enhancer</a>
+          </div>
+          <button type="button" class="header-hamburger-btn js-header-menu-toggler">
+            <span></span>
+          </button>
+          <div class="header-backdrop js-header-backdrop"></div>
+          <nav class="header-menu js-header-menu">
+            <button type="" button class="header-close-btn js-header-menu-toggler">
+              <i class="fas fa-items"></i>
+            </button>
+            <ul class="menu">
+              <li class="menu-item"><a href="{% url 'tutor_base' %}">Home</a></li>
+              {% comment %} <li class="menu-item">Hello {{user.username}}</a></li> {% endcomment %}
+             
+           
+            <li class="menu-item"><a href="{% url 'contact' %}">Contact</a></li>
+            <li class="menu-item"><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      </div>
+    </header>
+    <!-- HEADER END -->
+{% endif %}
+
+{% if messages %}
+<div class="alert-container">
+    {% for message in messages %}
+    <div class="alert alert-success">
+        <h4 class="alert-heading">
+        {{ message }}
+        </h4>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+<div class="form-container">
+    <h2>Create a New Course</h2>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label>Course Title</label>
+        <input type="text" name="title" required>
+
+        <label>Category</label>
+        <input type="text" name="category" required>
+
+        <label>Course Level</label>
+        <select name="level">
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+        </select>
+
+        <label>Course Description</label>
+        <textarea name="description" rows="4"></textarea>
+
+        <label>Course Price (₹)</label>
+        <input type="number" name="price" step="0.01">
+
+        <label>Course Image</label>
+        <input type="file" name="image">
+
+        <button type="submit">Create Course</button>
+    </form>
+</div>
+<div class="proceed-button-container">
+    {% comment %} <a href= "{% url 'add_module' courses.last.id %}"   class="proceed-button">
+    {% comment %} <a href= "{% url 'add_module'course.id %}"   class="proceed-button"> {% endcomment %}
+        {% comment %} Proceed to Add Course Module →
+    </a> {% endcomment %}
+
+    {% if last_course %}
+    <a href="{% url 'add_module' last_course.id %}" class="proceed-button">
+        Proceed to Add Course Module →
+    </a>
+{% else %}
+    <p>No course available to proceed.</p>
+{% endif %}
+</div>
+
+
+    <!-- FOOTER START -->
+<footer class="footer">
+    <div class="foter-top"></div>
+    <div class="container"></div>
+    <div class="row">
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3 class="footer-logo"><span>Skill</span>Enhancer</h3>
+          <ul>
+            <li><a href="">About</a></li>
+            <li><a href="">What we offer</a></li>
+            <li><a href="">Career</a></li>
+            <li><a href="">Certificates</a></li>
+            <li><a href="">blog</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3>learning</h3>
+          <ul>
+            <li><a href="">Get the app</a></li>
+            <li><a href="">testiomonials</a></li>
+            <li><a href="">pricing</a></li>
+            <li><a href="">faq</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3>more</h3>
+          <ul>
+            <li><a href="">affiliates</a></li>
+            <li><a href="">Become course creator</a></li>
+            <li><a href="">trainiing webinars</a></li>
+            <li><a href="">free personality test</a></li>
+            <li><a href="">help and support</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="footer-item">
+          <h3>get in touch</h3>
+          <ul>
+            <li><a href=""><i class="fab fa-facebook social-icon"></i> Facebook</a></li>
+            <li><a href=""><i class="fab fa-twitter social-icon"></i> Twitter</a></li>
+            <li><a href=""><i class="fab fa-instagram social-icon"></i> Instagram</a></li>
+            <li><a href=""><i class="fab fa-youtube social-icon"></i> Youtube</a></li>
+            <li><a href=""><i class="fab fa-linkedin social-icon"></i> Linkedin</a></li>
+          </ul>
+      </div>
+</div>
+    </div>
+    </div>
+    <div class="foter-bottom">
+      <div class="container">
+        <p class="m-0 py-4 text-center">copyright &copy;2025 SKillEnhancer </p>
+      </div>
+</div>
+  </footer>
+  <!-- FOOTER END -->
+  <script src="{% static 'bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'main.js' %}"></script>
+</body>
+
+</html>

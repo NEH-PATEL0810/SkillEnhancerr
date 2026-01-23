@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title> SkillEnhancer </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% comment %} <link rel="stylesheet" href="{% static 'font-awesome.css' %}"> {% endcomment %}
+  <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'style1.css' %}">
+  <link rel="stylesheet" class="js-color-style" href="{% static 'color-1.css' %}">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  
+  <style>
+  .dashboard-title {
+      font-size: 28px;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 20px;
+  }
+  
+  /* Course Cards */
+  .course-card {
+      border-radius: 12px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      background: #fff;
+      transition: transform 0.3s ease-in-out;
+  }
+  
+  .course-card:hover {
+      transform: scale(1.02);
+  }
+  
+  /* Course Image */
+  .course-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+  }
+  
+  /* Enrolled Badge */
+  .bg-success {
+      font-size: 14px;
+      padding: 5px 10px;
+  }
+</style>
+</head>
+
+<body>
+
+  <div class="main-wrapper">
+    <header class="header">
+      <div class="container">
+        <div class="header-main d-flex justify-content-between align-items-center">
+          <div class="header-logo">
+            <a href="{% url 'home' %}"><span>Skill</span>Enhancer</a>
+          </div>
+          <button type="button" class="header-hamburger-btn js-header-menu-toggler">
+            <span></span>
+          </button>
+          <div class="header-backdrop js-header-backdrop"></div>
+          <nav class="header-menu js-header-menu">
+            <button type="" button class="header-close-btn js-header-menu-toggler">
+              <i class="fas fa-items"></i>
+            </button>
+            
+            </li>
+  
+            <li class="menu-item"><a href="{% url 'student_base' %}">Home</a></li>
+            <li class="menu-item"><a href="{% url 'student_premium_plan' %}">Premium Plan</a></li>
+            <li class="menu-item"><a href="{% url 'contact' %}">Contact</a></li>
+            <li class="menu-item"><a href="{% url 'logout' %}">Logout</a></li>
+            
+            <li class="menu-item">Hello,{{user.username}}</li>
+         
+            
+           
+            </ul>
+          </nav>
+        </div>
+      </div>
+      </div>
+    </header>
+
+    <div class="container mt-4">
+      <h2 class="dashboard-title">📚 My Enrolled Courses</h2>
+     
+      {% if enrolled_courses %}
+      <div class="row">
+          {% for course in enrolled_courses %}
+          <div class="col-md-6 col-lg-4">
+              <div class="card course-card p-3">
+                  <img src="{{ course.image.url }}" alt="{{ course.title }}" class="img-fluid rounded">
+                  <h4 class="mt-2">{{ course.title }}</h4>
+                  <p class="text-muted">{{ course.category }} | Level: {{ course.level }}</p>
+                  
+                  <div class="d-flex justify-content-between align-items-center">
+                      <a href="{% url 'student_course_detail' course.id %}" class="btn btn-primary btn-sm">📖 View Course</a>
+                      <span class="badge bg-success">✔ Enrolled</span>
+                  </div>
+              </div>
+          </div>
+          {% endfor %}
+      </div>
+      {% else %}
+      {% if student_profile.is_premium %}
+      
+      <p class="text-muted">You have premium access to all courses.</p>
+      
+      {% else %}
+      <p class="text-muted">You have not enrolled in any courses yet.</p>
+     {% endif %}
+      {% endif %}
+  </div>
+<script src="{% static 'bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'main.js' %}"></script>
+</body>
+
+</html>

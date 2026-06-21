@@ -363,29 +363,7 @@ Email notifications use Gmail SMTP. To configure:
 
 ---
 
-## 🤝 Contributing
 
-Contributions are welcome! Here's how to get started:
-
-1. **Fork** the repository
-2. **Create** a feature branch: `git checkout -b feature/your-feature`
-3. **Commit** your changes: `git commit -m "Add your feature"`
-4. **Push** to the branch: `git push origin feature/your-feature`
-5. **Open** a Pull Request
-
-### Development Notes
-
-- The quiz system (Quiz, Question, Option, StudentQuizAttempt, StudentAnswer) is scaffolded in the codebase but currently commented out — it can be enabled for future development.
-- The project uses SQLite by default; for production, consider switching to PostgreSQL.
-- Static files are served via Django's development server; for production, use a CDN or `collectstatic`.
-
----
-
-## 📜 License
-
-This project is open-source. Feel free to use, modify, and distribute it.
-
----
 
 ## 👤 Author
 
